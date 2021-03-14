@@ -1,0 +1,10 @@
+{
+  "name": "unity_robotics.unity_moveit_connector",
+  "version": "0.1-alpha",
+  "displayName": "Moveit Connector",
+  "description": "Communicate with a running moveit instance on ROS",
+  "unity": "2020.2",
+  "unityRelease": "0b9",
+  "dependencies": {
+ }
+}
