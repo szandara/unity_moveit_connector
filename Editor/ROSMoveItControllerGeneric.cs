@@ -79,7 +79,7 @@ public class ROSMoveItControllerGeneric : MonoBehaviour
     InvokeRepeating("PublishJointStates", 1.0f, jointPublishRate);
 
     // Subscribe to the moveit trajectory topic
-    ros.Subscribe<RosMessageTypes.Moveit.RobotTrajectory>
+    ros.Subscribe<RosMessageTypes.Trajectory.JointTrajectory>
         (moveItMoveGroupRoot + moveItMoveGroup, TrajectoryHandler);
   }
 
@@ -136,7 +136,7 @@ public class ROSMoveItControllerGeneric : MonoBehaviour
   /// <summary>
   /// Start a separate routine which executes the trajectory
   /// </summary>
-  public void TrajectoryHandler(RosMessageTypes.Moveit.RobotTrajectory response)
+  public void TrajectoryHandler(RosMessageTypes.Trajectory.JointTrajectory response)
   {
     StartCoroutine(ExecuteTrajectories(response));
   }
@@ -144,17 +144,17 @@ public class ROSMoveItControllerGeneric : MonoBehaviour
   /// <summary>
   /// Execute the trajectory coming from MoveIt
   /// </summary>
-  private IEnumerator ExecuteTrajectories(RosMessageTypes.Moveit.RobotTrajectory response)
+  private IEnumerator ExecuteTrajectories(RosMessageTypes.Trajectory.JointTrajectory joint_trajectory)
   {
     // The joint order of MoveIt is not regular so we must read the names to map
     // the right joint index.
-    string[] jointNamesFromROS = response.joint_trajectory.joint_names;
+    string[] jointNamesFromROS = joint_trajectory.joint_names;
 
     // For each trajectory returned by MoveIt set the xDrive and wait for completion
-    for (int jointConfigIndex  = 0 ; jointConfigIndex < response.joint_trajectory.points.Length; jointConfigIndex++)
+    for (int jointConfigIndex  = 0 ; jointConfigIndex < joint_trajectory.points.Length; jointConfigIndex++)
     {
       // Get the joint position in radians and transform to degrees
-      var jointPositions = response.joint_trajectory.points[jointConfigIndex].positions;
+      var jointPositions = joint_trajectory.points[jointConfigIndex].positions;
       float[] result = jointPositions.Select(r => (float)r * Mathf.Rad2Deg).ToArray();
 
       // No points
