@@ -1,6 +1,12 @@
 ## Intro
 Unity script which acts as controller for Unity ArticulationBody robotics arms for a ROS moveit instance. This C# script can be used to use Unity as simulator for ROS. It follows the examples from https://github.com/Unity-Technologies/Unity-Robotics-Hub/blob/main/tutorials/pick_and_place/3_pick_and_place.md but tries to generify the creation of the state publishing and joint actuation.
 
+The script does two things:
+- It streams the joint state of the arm to ROS
+- It receives ROS trajectories and actuates the joints of an articulated arm using ArticulationBody
+
+It requires Unity version >= 2020.05f
+
 A convenient way to use this component is joint with https://github.com/szandara/unity_moveit_manager to stream the trajectories from MoveIt! direclty to Unity.
 The C# script should be added to the Unity scene and configured to point to the base of an articulated arm. Only articulated arms are supported.
 
